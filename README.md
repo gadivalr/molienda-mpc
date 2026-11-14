@@ -48,21 +48,21 @@ dilución (m³/h). Salidas controladas: P80 del overflow (µm), carga del molino
 densidad de alimentación al ciclón (fracción másica).
 
 ---
-
 ## 3. Modelo matemático
 
 ### 3.1 Molino: balance poblacional
 
 Se discretiza el tamaño de partícula en 14 clases geométricas entre 16 mm y 10 µm. La
-alimentación sigue una distribución Rosin-Rammler truncada en 16 mm (scalping) y
-renormalizada, por lo que su P80 efectivo es aproximadamente 8.4 mm. Para cada clase `i`:
+alimentación fresca ($\dot{m}_f$) sigue una distribución Rosin-Rammler truncada en 16 mm
+(scalping) y renormalizada, por lo que su P80 efectivo es aproximadamente 8.4 mm. Para
+cada clase `i`:
 
 $$
-\frac{dm_i}{dt} = \dot m_{mf}\,f_{mf,i} - \frac{m_i}{\tau_{eff}} + \sum_{j=1}^{n} b_{ij}\,k_j\,m_j - k_i\,m_i
+\frac{dm_i}{dt} = \dot{m}_{mf} \cdot f_{mf,i} - \frac{m_i}{\tau_{eff}} + \sum_{j=1}^{i-1} b_{ij} \cdot k_j \cdot m_j - k_i \cdot m_i
 $$
 
-donde `m_i` es la masa retenida (t), `\dot m_{mf}` la alimentación al molino (fresco +
-underflow) y `f_{mf,i}` su distribución másica.
+donde $m_i$ es la masa retenida (t), $\dot m_{mf}$ la alimentación total al molino
+(mineral fresco + underflow) y $f_{mf,i}$ su distribución másica.
 
 Función de selección de Austin:
 
@@ -78,7 +78,7 @@ $$
 B(x) = \phi\left(\frac{x}{x_j}\right)^{\gamma} + (1-\phi)\left(\frac{x}{x_j}\right)^{\beta}
 $$
 
-La matriz `b_{ij}` se obtiene por diferencias de `B` y se normaliza por columna.
+La matriz $b_{ij}$ se obtiene por diferencias de $B$ y se normaliza por columna.
 
 El tiempo de residencia depende del flujo volumétrico de pulpa, lo que reproduce el
 comportamiento de un molino de rebalse: más flujo implica menos tiempo de molienda y un
@@ -93,14 +93,16 @@ $$
 Tanque de mezcla perfecta donde se agrega agua de dilución:
 
 $$
-\frac{dm_{s,i}}{dt} = \frac{m_i}{\tau_{eff}} - \frac{m_{s,i}}{\tau_s},
-\qquad
-\frac{dM_{ws}}{dt} = \frac{M_w}{\tau_{eff}} + \dot V_{w,dil} - \frac{M_{ws}}{\tau_s}
+\frac{dm_{s,i}}{dt} = \frac{m_i}{\tau_{eff}} - \frac{m_{s,i}}{\tau_s}
+$$
+
+$$
+\frac{dM_{ws}}{dt} = \frac{M_w}{\tau_{eff}} + \dot{V}_{w,dil} - \frac{M_{ws}}{\tau_s}
 $$
 
 ### 3.3 Hidrociclón
 
-La alimentación se calcula desde el sump (`\dot m_{cf} = M_{ss}/\tau_s`). El tamaño de corte
+La alimentación se calcula desde el sump ($\dot m_{cf} = M_{ss}/ \tau_s$). El tamaño de corte
 depende del flujo y de la concentración de sólidos:
 
 $$
@@ -115,7 +117,7 @@ y_i = \frac{e^{\alpha_c x_i/d_{50}} - 1}
 {e^{\alpha_c x_i/d_{50}} + e^{\alpha_c} - 2}
 $$
 
-El underflow se reparte según `f_{u,i} = f_{cf,i} y_i / \sum_j f_{cf,j} y_j`; el overflow
+El underflow se reparte según $f_{u,i} = \frac{f_{cf,i}y_i}{\sum_j f_{cf,j}y_j}$; el overflow
 es el complemento. El P80 del producto se obtiene interpolando el pasante acumulado en 80 %.
 
 ### 3.4 Potencia y presión
@@ -124,7 +126,7 @@ Potencia de molino tipo Bond con corrección por carga:
 
 $$
 P = P_0 + 10\,W_i\left(\frac{1}{\sqrt{P80}} - \frac{1}{\sqrt{F80}}\right)
-\dot m_f \left(\frac{M_s}{M_{ref}}\right)^{0.2}
+\dot{m}_f \left(\frac{M_s}{M_{ref}}\right)^{0.2}
 $$
 
 Presión del ciclón:
@@ -159,11 +161,12 @@ discretiza con exponencial de matriz (retenedor de orden cero). El resultado es 
 30 estados, 3 entradas y 3 salidas en variables de desviación:
 
 $$
-\Delta x_{k+1} = A\,\Delta x_k + B\,\Delta u_k,
-\qquad
-\Delta y_k = C\,\Delta x_k
+\Delta x_{k+1} = A \Delta x_k + B \Delta u_k
 $$
 
+$$
+\Delta y_k = C \Delta x_k
+$$
 - **Observador aumentado:** filtro de Kalman estacionario sobre el estado extendido
   `[x, d]`, donde `d` son perturbaciones constantes de salida. Esto da seguimiento sin
   offset (offset-free) sin un integrador sintonizado a mano.
