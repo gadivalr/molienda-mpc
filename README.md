@@ -58,8 +58,7 @@ alimentación sigue una distribución Rosin-Rammler truncada en 16 mm (scalping)
 renormalizada, por lo que su P80 efectivo es aproximadamente 8.4 mm. Para cada clase `i`:
 
 $$
-\frac{dm_i}{dt} = \dot m_{mf}\,f_{mf,i} - \frac{m_i}{\tau_{eff}}
-+ \sum_{j=1}^{n} b_{ij}\,k_j\,m_j - k_i\,m_i
+\frac{dm_i}{dt} = \dot m_{mf}\,f_{mf,i} - \frac{m_i}{\tau_{eff}} + \sum_{j=1}^{n} b_{ij}\,k_j\,m_j - k_i\,m_i
 $$
 
 donde `m_i` es la masa retenida (t), `\dot m_{mf}` la alimentación al molino (fresco +
@@ -76,8 +75,7 @@ con `h` un factor de dureza del mineral (`h < 1` = más duro).
 Función de ruptura acumulada de Austin:
 
 $$
-B(x) = \phi\left(\frac{x}{x_j}\right)^{\gamma}
-+ (1-\phi)\left(\frac{x}{x_j}\right)^{\beta}
+B(x) = \phi\left(\frac{x}{x_j}\right)^{\gamma} + (1-\phi)\left(\frac{x}{x_j}\right)^{\beta}
 $$
 
 La matriz `b_{ij}` se obtiene por diferencias de `B` y se normaliza por columna.
