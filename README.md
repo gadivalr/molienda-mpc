@@ -28,7 +28,7 @@ Concepción. Proyecto de portafolio orientado a automatización y control de pro
 
 ---
 
-## 2. Circuito simulado
+## 2. Planta simulada
 
 ```mermaid
 flowchart LR
