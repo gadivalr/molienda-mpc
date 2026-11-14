@@ -1,6 +1,6 @@
-# Gemelo digital de un circuito de molienda-clasificación con MPC y sensor virtual de P80
+# Gemelo digital de una planta de molienda-clasificación con MPC y sensor virtual de P80
 
-Simulación en Python de un circuito industrial de molienda de bolas en circuito cerrado con
+Simulación en Python de una planta industrial de molienda de bolas en lazo cerrado con
 hidrociclón. El proyecto incluye un modelo fenomenológico, un controlador predictivo (MPC),
 un sensor virtual de granulometría (soft sensor) y la generación automática de figuras y
 métricas para evaluar el desempeño.
